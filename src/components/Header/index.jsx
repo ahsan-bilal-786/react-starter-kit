@@ -4,7 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { APP_NAME } from 'config';
 import { AppRoutes, DashboardRoutes } from 'routes';
-import { UserDropDown, NavDropDownLink } from 'components/Header/style';
+import {
+  UserDropDown,
+  NavDropDownLink,
+  AppTitle,
+} from 'components/Header/style';
 
 /**
  * Header is a template top navigation bar of user layout
@@ -12,7 +16,9 @@ import { UserDropDown, NavDropDownLink } from 'components/Header/style';
 const Header = () => {
   return (
     <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
-      <Navbar.Brand href='#home'>{APP_NAME}</Navbar.Brand>
+      <Navbar.Brand>
+        <AppTitle to={AppRoutes.DASHBOARD.path}>{APP_NAME}</AppTitle>
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
       <Navbar.Collapse id='responsive-navbar-nav'>
         <Nav className='mr-auto'></Nav>
