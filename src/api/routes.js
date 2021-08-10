@@ -5,9 +5,14 @@ import replace from 'lodash/replace';
 import { API_BASE_PATH } from 'config';
 
 const ROUTES_OBJ = {
-  login: `${API_BASE_PATH}/login`,
-  registerUser: `${API_BASE_PATH}/register`,
-  userProfile: `${API_BASE_PATH}/register/<userId>`,
+  login: `${API_BASE_PATH}/login/`,
+  registerUser: `${API_BASE_PATH}/register/`,
+  userProfile: `${API_BASE_PATH}/user/`,
+  changePassword: `${API_BASE_PATH}/change-password/`,
+  updateProfile: `${API_BASE_PATH}/update-profile/`,
+  userPost: `${API_BASE_PATH}/post/`,
+  updateProfileImages: `${API_BASE_PATH}/update-profile-pictures/`,
+  userSearch: `${API_BASE_PATH}/search/?`,
 };
 
 /**
@@ -19,10 +24,17 @@ const ROUTES_OBJ = {
  */
 const getRoute = (routeName, params = {}) => {
   let url = ROUTES_OBJ[routeName];
+
+  if (
+    (routeName === 'userProfile' || routeName === 'userPost') &&
+    params['id'] !== undefined
+  )
+    url += '?id=<id>';
   const result = map(params, (val, key) => {
     val = Array.isArray(val) ? val.join(',') : val;
-    url = replace(url, new RegExp(`<${key}>`, 'g'), val);
-    return url;
+    if (routeName === 'userSearch') url += `${key}=${val}&`;
+    else url = replace(url, new RegExp(`<${key}>`, 'g'), val);
+    return routeName === 'userSearch' ? url.slice(0, -1) : url;
   });
   url = size(result) > 0 ? last(result) : url;
   return url;

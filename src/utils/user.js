@@ -4,9 +4,14 @@
 import Cookies from 'universal-cookie';
 import { COOKIE_USER_TOKEN_FIELD } from 'config';
 
-export function setUserToken(payload) {
+export function setUserToken(payload, remember_me) {
+  const date = new Date();
   const cookies = new Cookies();
-  cookies.set(COOKIE_USER_TOKEN_FIELD, payload, { path: '/' });
+  const options = { path: '/', sameSite: 'strict' };
+  options['expires'] = remember_me
+    ? new Date(date.setFullYear(date.getFullYear() + 1))
+    : 0;
+  cookies.set(COOKIE_USER_TOKEN_FIELD, payload, options);
 }
 
 export function getUserToken() {

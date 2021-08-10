@@ -5,7 +5,7 @@ import store from 'store/index';
 import { Router } from 'react-router-dom';
 import { AppRouter } from 'routes';
 
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
 
 const App = () => {
   return (

@@ -1,17 +1,27 @@
-import { SET_PROFILE } from 'pages/Emails/actions/action-types';
+import {
+  FETCH_USER_POSTS,
+  ADD_USER_POST,
+} from 'pages/Profile/ducks/action-types';
 
-const initialState = {
-  profile: {},
-};
+const initialState = { posts: null };
 
-function profileReducer(state = initialState, action) {
+function reducer(state = initialState, action) {
   switch (action.type) {
-    case SET_PROFILE:
-      state = { ...state, profile: action.profile };
+    case FETCH_USER_POSTS:
+      state = {
+        ...state,
+        posts: action.payload,
+      };
+      break;
+    case ADD_USER_POST:
+      state = {
+        ...state,
+        posts: [action.payload, ...state.posts],
+      };
       break;
     default:
   }
   return state;
 }
 
-export default profileReducer;
+export default reducer;

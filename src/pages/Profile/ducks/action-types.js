@@ -1,1 +1,2 @@
-export const SET_PROFILE = 'SET_PROFILE';
+export const FETCH_USER_POSTS = 'FETCH_USER_POSTS';
+export const ADD_USER_POST = 'ADD_USER_POST';

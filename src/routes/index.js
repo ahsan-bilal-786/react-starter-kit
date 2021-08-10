@@ -1,27 +1,42 @@
 import React, { lazy, Suspense } from 'react';
 import map from 'lodash/map';
-import { Route, Switch, Redirect } from 'react-router-dom';
-import siteLayout from 'layouts/Site';
+import { Switch, Redirect } from 'react-router-dom';
 import dashboardLayout from 'layouts/Dashboard';
-import Login from 'pages/Auth/Login';
+import HomePageLayout from 'layouts/HomePage';
 import Logout from 'pages/Auth/Logout';
-const Signup = lazy(() => import('pages/Auth/Signup'));
+import RegistrationForm from 'components/RegistrationForm';
+
 const ChangePassword = lazy(() => import('pages/Auth/ChangePassword'));
 const Dashboard = lazy(() => import('pages/Dashboard'));
-const Profile = lazy(() => import('pages/Profile'));
+const Profile = lazy(() => import('pages/Profile/UpdateProfile'));
+const Search = lazy(() => import('pages/Search'));
+const PrivateRoute = lazy(() => import('routes/PrivateRoute'));
+const PublicRoute = lazy(() => import('routes/PublicRoute'));
 
 export const RoutesHOC = (routes, defaultPath) => {
   return (props) => (
-    <Suspense fallback={<div />}>
+    <Suspense fallback={<div></div>}>
       <Switch>
         {map(routes, (route) => {
-          return (
-            <Route
-              key={route.name}
-              path={route.path}
-              component={route.component}
-            />
-          );
+          if (route.isPublic === true) {
+            return (
+              <PublicRoute
+                key={route.name}
+                path={route.path}
+                component={route.component}
+                exact
+              />
+            );
+          } else {
+            return (
+              <PrivateRoute
+                key={route.name}
+                path={route.path}
+                component={route.component}
+                exact
+              />
+            );
+          }
         })}
         <Redirect to={defaultPath} />
       </Switch>
@@ -30,16 +45,6 @@ export const RoutesHOC = (routes, defaultPath) => {
 };
 
 export const DashboardRoutes = {
-  PROFILE: {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile,
-  },
-  CHANGE_PASSWORD: {
-    path: '/change-password',
-    name: 'Change Password',
-    component: ChangePassword,
-  },
   MAIN: {
     path: '/',
     name: 'Dashboard',
@@ -48,25 +53,47 @@ export const DashboardRoutes = {
 };
 
 export const AppRoutes = {
-  SIGNUP: {
-    path: '/signup',
-    name: 'Signup',
-    component: siteLayout(Signup),
-  },
   LOGIN: {
     path: '/login',
     name: 'Login',
-    component: siteLayout(Login),
+    component: HomePageLayout(RegistrationForm),
+    isPublic: true,
   },
   LOGOUT: {
     path: '/logout',
     name: 'Logout',
     component: Logout,
+    isPublic: false,
   },
   DASHBOARD: {
     path: '/',
     name: 'Dashboard',
     component: dashboardLayout(RoutesHOC(DashboardRoutes, '/')),
+    isPublic: false,
+  },
+  UPDATE_PROFILE: {
+    path: '/update-profile',
+    name: 'Update Profile',
+    component: dashboardLayout(Profile),
+    isPublic: false,
+  },
+  CHANGE_PASSWORD: {
+    path: '/update-password',
+    name: 'Update Password',
+    component: dashboardLayout(ChangePassword),
+    isPublic: false,
+  },
+  SEARCH: {
+    path: '/search',
+    name: 'Search',
+    component: dashboardLayout(Search),
+    isPublic: false,
+  },
+  PROFILE: {
+    path: '/profile/:userId',
+    name: 'Profile',
+    component: dashboardLayout(Dashboard),
+    isPublic: false,
   },
 };
 
