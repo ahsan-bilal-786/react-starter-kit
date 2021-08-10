@@ -6,12 +6,7 @@ import { SelectField } from 'elements/Form';
 import { FilledButton } from 'elements/Button';
 import { history } from 'App';
 
-const SearchFilters = ({
-  workFilters,
-  educationFilters,
-  hometownFilters,
-  setForceRerender,
-}) => {
+const SearchFilters = ({ workFilters, educationFilters, hometownFilters }) => {
   const RELATIONSHIP_STATUES = ['Single', 'Committed', 'Married', 'Divorced'];
   const initialValues = {
     hometown: '',

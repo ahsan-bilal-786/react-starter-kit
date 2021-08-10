@@ -10,9 +10,6 @@ const Search = () => {
   const query = useQuery();
 
   const search_param = query.get('search');
-  const [value, setValue] = useState('');
-  console.log('this is my search query outside filter', search_param);
-  useEffect(() => {}, [value]);
   const [searchResults, setSearchResults] = useState([]);
   const [hometownFilters, setHometownFilters] = useState([]);
   const [educationFilters, setEducationFilters] = useState([]);
@@ -56,8 +53,6 @@ const Search = () => {
               hometownFilters={hometownFilters && hometownFilters}
               educationFilters={educationFilters && educationFilters}
               workFilters={workFilters && workFilters}
-              searchParams={search_param}
-              setForceRerender={setValue}
             />
           </Col>
           <Col md='8'>
