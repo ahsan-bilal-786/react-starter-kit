@@ -43,7 +43,6 @@ const CreatePostPrompt = ({ createPost, setPostStatus }) => {
         if (error.response.data && error.response.data.image)
           fieldErrors.image = error.response.data.image[0];
         setErrors(fieldErrors);
-        console.log(fieldErrors);
         setSubmitting(false);
       });
   }
